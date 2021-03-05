@@ -1,16 +1,4 @@
 from pymongo import MongoClient
-from flask import Flask, render_template
-
-app = Flask(__name__)
-
-# Flask
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
-
-@app.route('/user_list')
-def hello(name=None):
-    return render_template('user_list.html',list_users=get_all_user(db))
 
 # Mongo
 def get_db():
@@ -21,7 +9,6 @@ def get_db():
 
 
 def get_all_user(db):
-    client = MongoClient('localhost:27017')
     collection = db.user
     return list(collection.find({}))
 
@@ -36,14 +23,3 @@ def add_user(db):
 
 def get_country(db):
     return db.user.find_one()
-
-
-if __name__ == "__main__":
-    db = get_db()
-    get_country(db)
-    truc = (get_all_user(db))
-    for elem in truc:
-        print(elem)
-
-    app.run(debug=True)
-

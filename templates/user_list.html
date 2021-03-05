@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<title>Liste des utilisateurs</title>
+<table>
+{% for elem in list_users %}
+    <tr><td>{{elem.name}}</td><td>Adresse Mail :{{elem.mail}}</td></tr>
+
+{% endfor %}
+</table>
