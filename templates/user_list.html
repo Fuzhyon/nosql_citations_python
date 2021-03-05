@@ -1,8 +1,15 @@
 <!DOCTYPE html>
+<link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
 <title>Liste des utilisateurs</title>
 <table>
+     <thead>
+        <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Mail</th>
+        </tr>
+    </thead>
 {% for elem in list_users %}
-    <tr><td>{{elem.name}}</td><td>Adresse Mail :{{elem.mail}}</td></tr>
+    <tr><td>{{elem.name}}</td><td>{{elem.mail}}</td></tr>
 
 {% endfor %}
 </table>
