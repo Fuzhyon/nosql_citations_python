@@ -41,6 +41,7 @@ def get_country(db):
 if __name__ == "__main__":
     db = get_db()
     get_country(db)
+    add_user(db)
     truc = (get_all_user(db))
     for elem in truc:
         print(elem)
