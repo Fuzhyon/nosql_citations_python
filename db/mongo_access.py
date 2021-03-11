@@ -22,3 +22,8 @@ def add_user(db_mongo):
 
 def get_user(db_mongo):
     return db_mongo.user.find_one()
+
+
+def get_all_citations(db_mongo):
+    collection = db_mongo.user
+    return list(collection.find({}))

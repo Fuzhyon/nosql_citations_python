@@ -6,21 +6,21 @@ app = Flask(__name__)
 
 # Flask
 @app.route('/')
-def hello_world():
-    return 'Hello, World!'
-
+def index_page():
+    return render_template('index.html',list_citations=ma.get_all_citations(ma.get_db()))
 
 @app.route('/user_list')
-def liste_utilisateurs():
-    return render_template('user_list.html', list_users=ma.get_all_user(db))
+def hello(name=None):
+    return render_template('user_list.html',list_users=ma.get_all_user(ma.get_db()))
+
+@app.route('/connexion')
+def connexion():
+    return render_template('connecter.html')
+
+@app.route('/inscription')
+def inscription():
+    return render_template('inscription.html')
 
 
 if __name__ == "__main__":
-    db = ma.get_db()
-    ma.get_user(db)
-    ma.add_user(db)
-    truc = (ma.get_all_user(db))
-    for elem in truc:
-        print(elem)
-
     app.run(debug=True)
