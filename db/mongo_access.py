@@ -3,7 +3,6 @@ from pymongo import MongoClient
 def get_db():
     client = MongoClient('localhost:27017')
     db_mongo = client.citations_db
-    print(db_mongo.user.find_one())
     return db_mongo
 
 
@@ -25,5 +24,5 @@ def get_user(db_mongo):
 
 
 def get_all_citations(db_mongo):
-    collection = db_mongo.user
+    collection = db_mongo.citation
     return list(collection.find({}))
