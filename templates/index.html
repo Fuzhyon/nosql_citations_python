@@ -19,11 +19,15 @@
                     </div>
                     <!--end of col-->
                     <div class="col">
-                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords">
+                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Citation">
+                    </div>
+
+                    <div class="col">
+                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Auteur">
                     </div>
                     <!--end of col-->
                     <div class="col-auto">
-                        <button class="btn btn-lg btn-success" type="submit">Search</button>
+                        <button class="btn btn-lg btn-success" type="submit">Rechercher</button>
                     </div>
                     <!--end of col-->
 
@@ -45,12 +49,12 @@
 <table class="table">
      <thead class="thead-dark">
         <tr>
-            <th scope="col">Nom</th>
-            <th scope="col">Mail</th>
+            <th scope="col">Citation</th>
+            <th scope="col">Auteur</th>
         </tr>
     </thead>
 {% for elem in list_citations %}
-    <tr><td>{{elem.author}}</td><td>{{elem.citation}}</td></tr>
+    <tr><td>{{elem.text}}</td><td>{{elem.author}}</td></tr>
 
 {% endfor %}
 </table>
