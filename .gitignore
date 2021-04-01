@@ -22,9 +22,3 @@ htmlcov/
 .coverage
 .coverage.*
 *,cover
-
-venv/
-__pycache__/
-
-instance/
-
