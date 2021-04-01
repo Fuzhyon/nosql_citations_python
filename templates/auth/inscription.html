@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<body>
+<div class="container">
+  <h1>Inscription</h1>
+  <br>
+  <form>
+    <div class="form-group">
+      <label for="exampleInputEmail1">User</label>
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Entrez votre mail">
+      <small id="emailHelp" class="form-text text-muted">Nous ne partagerons votre mail à personne d'autre.</small>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Mot de passe</label>
+      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Entrez votre mot de passe">
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Confirmation de Mot de Passe</label>
+      <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Confirmez votre mot de passe">
+    </div>
+    <div class="form-group form-check">
+      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+      <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    </div>
+    <button onclick="user_list.html" type="submit" class="btn btn-primary">Se Connecter</button>
+  </form>
+  {% if error %}
+  <p class="error"><strong>Erreur:</strong> {{ error }}
+    {% endif %}
+</div>
+</body>
+{% endblock %}

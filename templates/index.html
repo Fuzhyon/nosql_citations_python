@@ -1,13 +1,5 @@
-
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
-
-
-
+{% extends "base.html" %}
+{% block content %}
 <body><div class="container">
     <br/>
     <div class="row justify-content-center">
@@ -15,7 +7,7 @@
             <form class="card card-sm" method ="post">
                 <div class="card-body row no-gutters align-items-center">
                     <div class="col-auto">
-                        <i class="fas fa-search h4 text-body"></i>
+                        <em class="fas fa-search h4 text-body"></em>
                     </div>
                     <!--end of col-->
                     <div class="col">
@@ -29,10 +21,7 @@
                     <div class="col-auto">
                         <button onclick="research_citation()" class="btn btn-lg btn-success" type="submit">Rechercher</button>
                     </div>
-                    <!--end of col-->
-
                 </div>
-
             </form>
 
         </div>
@@ -47,16 +36,27 @@
 </div>
 <div>
 <table class="table">
+    <caption>Citations et Auteurs</caption>
      <thead class="thead-dark">
         <tr>
             <th scope="col">Citation</th>
             <th scope="col">Auteur</th>
+            <th scope="col">Oeuvre</th>
+            <th scope="col">Date</th>
+            <th scope="col">Langue</th>
         </tr>
     </thead>
 {% for elem in list_citations %}
-    <tr><td>{{elem.text}}</td><td>{{elem.author}}</td></tr>
+    <tr>
+        <td>{{elem.text}}</td>
+        <td>{{elem.author}}</td>
+        <td>{{elem.oeuvre}}</td>
+        <td>{{elem.date}}</td>
+        <td>{{elem.langue}}</td>
+    </tr>
 
 {% endfor %}
 </table>
 </div>
 </body>
+{% endblock %}
