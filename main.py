@@ -3,6 +3,7 @@ from urllib import request
 from flask import Flask, render_template, request
 from pymongo import MongoClient
 from flask import jsonify
+import re
 from flask_pymongo import PyMongo
 from db import mongo_access as ma
 
@@ -47,10 +48,8 @@ def research_citation():
         for c in citations.find():
             print(c)
             if "author" in c:
-
                 x = c['author'].find(inputAuteur)
                 y = c['text'].find(inputCitation)
-                print(x)
                 if x != -1 and inputCitation == "":
                     output.append({'text': c['text'], 'author': c['author']})
                 if y != -1 and inputAuteur == "":
@@ -59,9 +58,11 @@ def research_citation():
                     output.append({'text': c['text'], 'author': c['author']})
                 if y != -1 and inputAuteur != "" and inputCitation != "":
                     output.append({'text': c['text'], 'author': c['author']})
-            elif "author" not in c:
-
-
+            elif "author" not in c and inputCitation != "":
+                print("coucou")
+                y = c['text'].find(inputCitation)
+                if y != -1:
+                    output.append({'text': c['text']})
         print(output)
         return render_template('index.html', list_citations=output)
     elif aucuneRecherche:
