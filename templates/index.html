@@ -12,22 +12,22 @@
     <br/>
     <div class="row justify-content-center">
         <div class="col-12 col-md-10 col-lg-8">
-            <form class="card card-sm">
+            <form class="card card-sm" method ="post">
                 <div class="card-body row no-gutters align-items-center">
                     <div class="col-auto">
                         <i class="fas fa-search h4 text-body"></i>
                     </div>
                     <!--end of col-->
                     <div class="col">
-                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Citation">
+                        <input name="citation" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Citation">
                     </div>
 
                     <div class="col">
-                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Auteur">
+                        <input name="auteur" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Auteur">
                     </div>
                     <!--end of col-->
                     <div class="col-auto">
-                        <button class="btn btn-lg btn-success" type="submit">Rechercher</button>
+                        <button onclick="research_citation()" class="btn btn-lg btn-success" type="submit">Rechercher</button>
                     </div>
                     <!--end of col-->
 

@@ -6,6 +6,7 @@ def get_db():
     return db_mongo
 
 
+
 def get_all_user(db_mongo):
     collection = db_mongo.user
     return list(collection.find({}))
