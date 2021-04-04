@@ -34,6 +34,10 @@ def connexion():
 def inscription():
     return render_template('inscription.html')
 
+@app.route('/', methods=['GET','POST'])
+def add_citation():
+    print("coucou")
+    return render_template('index.html', list_citations=ma.get_all_citations(ma.get_db()))
 
 @app.route('/', methods=['GET', 'POST'])
 def research_citation():

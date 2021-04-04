@@ -1,20 +1,21 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 </head>
 <body>
 <form>
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="inputCity">Citation</label>
-      <input type="text" class="form-control" id="inputCity">
+      <input name="lactation" type="text" class="form-control" id="inputCity">
     </div>
     <div class="form-group col-md-6">
       <label for="inputAuthor">Author</label>
-      <input type="text" class="form-control" id="inputAuthor">
+      <input name="author" type="text" class="form-control" id="inputAuthor">
     </div>
   </div>
   <div class="form-group">
@@ -25,7 +26,7 @@
       </label>
     </div>
   </div>
-  <button type="submit" class="btn btn-primary">Ajouter</button>
+  <button onclick="add_citation" type="submit" class="btn btn-primary">Ajouter</button>
 </form>
 </body>
-</html>
+{% endblock %}

@@ -1,6 +1,6 @@
 class Citation:
 
-    def __init__(self, texte, auteur=None, oeuvre=None, editeur=None, date=None, langue=None):
+    def __init__(self, texte, auteur, oeuvre=None, editeur=None, date=None, langue=None):
         self._texte = texte
         self._auteur = auteur
         self._oeuvre = oeuvre
