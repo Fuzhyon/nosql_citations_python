@@ -16,7 +16,7 @@ class MongoDBConnector:
         return list(self._db.user.find({}))
 
     def add_user(self, mail, password):
-        return self._user.insert_one({"mail": mail, "pwd": password})
+        return self._user.insert_one({"mail": mail, "pwd": password,"favorite":[]})
 
     def get_user(self, mail):
         return self._user.find_one({"mail": mail})
@@ -29,5 +29,12 @@ class MongoDBConnector:
     def get_all_citations(self):
         return list(self._citation.find({}))
 
-    def add_citation(self, citation, author,oeuvre,date,langue):
-        self._citation.insert_one({"text": citation, "author": author,"oeuvre":oeuvre,"date":date,"langue":langue})
+    def add_citation(self, citation, author, oeuvre, date, langue, user):
+        return self._citation.insert_one(
+            {"text": citation, "author": author, "oeuvre": oeuvre, "date": date, "langue": langue, "user": user})
+    def get_citation(self, citation):
+        return self._citation.find_one({"mail": citation})
+    def delete_citation(self,citation):
+        response = self._citation.delete_one({"text": citation})
+        output = {'Status': 'Successfully Deleted' if response.deleted_count > 0 else "Document not found."}
+        return output

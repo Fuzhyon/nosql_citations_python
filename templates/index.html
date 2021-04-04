@@ -57,6 +57,7 @@
             <th scope="col">Date</th>
             <th scope="col">Langue</th>
             <th scope="col">Favoris</th>
+            <th scope="col">Action</th>
         </tr>
         </thead>
         {% for elem in list_citations %}
@@ -67,6 +68,7 @@
             <td>{{elem.date}}</td>
             <td>{{elem.langue}}</td>
             <td><input type="checkbox" name="fav"/></td>
+            <td><button type="submit" class="btn btn-danger" onclick="onclick_delete_citation({{elem.text}})">Supp</button></td>
         </tr>
 
         {% endfor %}

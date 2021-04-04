@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash
 from db import MongoDBConnector
 from flask_pymongo import PyMongo
 from passlib.hash import pbkdf2_sha256 as encryptor
@@ -40,12 +40,6 @@ def connexion():
                 print(session)
                 return redirect(url_for('index'))
             return 'Email ou mot de passe incorrect(s)'
-
-
-
-
-
-
     return render_template('auth/connexion.html')
 
 
@@ -71,13 +65,17 @@ def launch_citation():
 
 @app.route('/add_citation/', methods=['POST'])
 def add_citation():
-    input_citation = request.form['text']
-    input_author = request.form['author']
-    input_oeuvre = request.form['oeuvre']
-    input_date = request.form['year']
-    input_langue = request.form['langue']
-    if input_citation != "":
-        bdd.add_citation(input_citation, input_author, input_oeuvre, input_date, input_langue)
+
+    if session['mail']:
+        input_citation = request.form['text']
+        input_author = request.form['author']
+        input_oeuvre = request.form['oeuvre']
+        input_date = request.form['year']
+        input_langue = request.form['langue']
+        if input_citation != "":
+            bdd.add_citation(input_citation, input_author, input_oeuvre, input_date, input_langue,session['mail'])
+    else:
+        flash("Pour être ajouter des citations il faut se connecter")
     return render_template(page_index, list_citations=bdd.get_all_citations())
 
 
@@ -112,6 +110,10 @@ def research_citation():
     elif aucune_recherche:
         return render_template(page_index, list_citations=bdd.get_all_citations())
 
-
+@app.route('/', methods=['GET'])
+def onclick_delete_citation(citation):
+    print("coucou")
+    test = bdd.get_citation(citation)
+    print(test)
 if __name__ == "__main__":
     app.run(debug=True)
