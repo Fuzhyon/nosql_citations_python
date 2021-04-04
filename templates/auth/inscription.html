@@ -1,27 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
-<body>
-<div class="container">
-  <h1>Inscription</h1>
-  <br>
-  <form method="post">
-    <div class="form-group">
-      <label for="exampleInputEmail1">Email</label>
-      <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Entrez votre mail" required>
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="/static/css/normalize.css">
+  <div class="card-wrapper">
+
+    <div class="card">
+
+    <h1 class="center">Inscription</h1>
+
+      <form method="post">
+
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" placeholder="waldo@foo.bar" class="field" required>
+
+        <label for="email">Mot de passe</label>
+        <input type="password" name="password" id="password" class="field" required>
+
+        <label for="email">Confirmer le mot de passe</label>
+        <input type="password" name="confirmPassword" id="confirmPassword" class="field" required>
+
+        <p class="error error--hidden"></p>
+
+        <input type="submit" onclick="add_user()" value="S'inscrire" class="btn">
+
+      </form>
+      <p></p>
     </div>
-    <div class="form-group">
-      <label for="exampleInputPassword1">Mot de passe</label>
-      <input name="password" type="password" class="form-control" id="password" placeholder="Entrez votre mot de passe" required>
-    </div>
-    <div class="form-group">
-      <label for="exampleInputPassword1">Confirmation de Mot de Passe</label>
-      <input name="confirmPassword" type="password" class="form-control" id="confirmPassword" placeholder="Confirmez votre mot de passe" required>
-    </div>
-    <input onclick="add_user()" type="submit" class="btn btn-primary" value="S'inscrire"/>
-  </form>
-  {% if error %}
-    <p class="error"><strong>Erreur:</strong> {{ error }}
-  {% endif %}
-</div>
-</body>
+  </div>
+
 {% endblock %}

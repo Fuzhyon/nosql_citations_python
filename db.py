@@ -1,3 +1,4 @@
+from flask import jsonify
 from pymongo import MongoClient
 
 
@@ -19,6 +20,9 @@ class MongoDBConnector:
 
     def get_user(self):
         return self._user.find_one()
+
+    def mail_already_exist(self, mail):
+        return self._user.find_one({"mail": mail})
 
     # CITATIONS
 

@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash, jsonify
 from db import MongoDBConnector
 from flask_pymongo import PyMongo
+from passlib.hash import pbkdf2_sha256 as encryptor
 
 app = Flask(__name__)
 
@@ -43,6 +44,9 @@ def add_user():
     password = request.form['password']
     confirmation_pwd = request.form['confirmPassword']
     if password == confirmation_pwd:
+        password = encryptor.encrypt(password)
+        if bdd.mail_already_exist(mail):
+            return jsonify({"error":"Cette adresse mail existe déjà"}), 400
         bdd.add_user(mail, password)
     return render_template(page_index, list_citations=bdd.get_all_citations())
 
@@ -52,7 +56,7 @@ def launch_citation():
     return render_template('add_citation.html')
 
 
-@app.route('/add_citation/', methods=[ 'POST'])
+@app.route('/add_citation/', methods=['POST'])
 def add_citation():
     input_citation = request.form['text']
     input_author = request.form['author']
