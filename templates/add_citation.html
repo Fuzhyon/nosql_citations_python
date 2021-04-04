@@ -1,13 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-
-</head>
 <body>
-<form>
+<form method="post">
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="inputCity">Citation</label>
@@ -26,7 +20,7 @@
       </label>
     </div>
   </div>
-  <button onclick="add_citation" type="submit" class="btn btn-primary">Ajouter</button>
+  <button onclick="add_citation()" type="submit" class="btn btn-primary">Ajouter</button>
 </form>
 </body>
 {% endblock %}

@@ -34,12 +34,15 @@ def inscription():
 @app.route('/user/signup', methods=['GET'])
 def signup():
     return User().signup()
-@app.route('/addCitation/')
-def launch_citation():
-    return render_template('addCitation.html')
 
-#@app.route('/addCitation/', methods=['GET','POST'])
-#def add_citation():
+@app.route('/add_citation/')
+def launch_citation():
+    return render_template('add_citation.html')
+
+@app.route('/add_citation/', methods=['GET','POST'])
+def add_citation():
+    print("coucou")
+    return render_template('index.html', list_citations=ma.get_all_citations(ma.get_db()))
 
 
 @app.route('/', methods=['GET', 'POST'])
