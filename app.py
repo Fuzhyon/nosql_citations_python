@@ -52,13 +52,19 @@ def launch_citation():
     return render_template('add_citation.html')
 
 
-@app.route('/add_citation/', methods=['GET', 'POST'])
+@app.route('/add_citation/', methods=[ 'POST'])
 def add_citation():
-    print("coucou")
+    input_citation = request.form['text']
+    input_author = request.form['author']
+    input_oeuvre = request.form['oeuvre']
+    input_date = request.form['year']
+    input_langue = request.form['langue']
+    if input_citation != "":
+        bdd.add_citation(input_citation,input_author,input_oeuvre,input_date,input_langue)
     return render_template(page_index, list_citations=bdd.get_all_citations())
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['POST'])
 def research_citation():
     input_auteur = request.form['auteur']
     input_citation = request.form['citation']

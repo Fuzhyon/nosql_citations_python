@@ -24,3 +24,6 @@ class MongoDBConnector:
 
     def get_all_citations(self):
         return list(self._citation.find({}))
+
+    def add_citation(self, citation, author,oeuvre,date,langue):
+        self._citation.insert_one({"text": citation, "author": author,"oeuvre":oeuvre,"date":date,"langue":langue})
