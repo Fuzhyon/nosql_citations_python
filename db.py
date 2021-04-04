@@ -23,4 +23,4 @@ class MongoDBConnector:
     # CITATIONS
 
     def get_all_citations(self):
-        return list(self._user.find({}))
+        return list(self._citation.find({}))
