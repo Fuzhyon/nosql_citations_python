@@ -22,4 +22,4 @@ def Inscription():
         else:
             pass # unknown
     elif request.method == 'GET':
-        return render_template('Inscription.html', form=form)
+        return render_template('inscription.html', form=form)
