@@ -27,6 +27,11 @@ def connexion():
     return render_template('auth/connexion.html')
 
 
+@app.route('/inscription/')
+def inscription_page():
+    return render_template('auth/inscription.html')
+
+
 @app.route('/dashboard/')
 def dashboard():
     return render_template('dashboard.html')
@@ -39,7 +44,7 @@ def add_user():
     confirmation_pwd = request.form['confirmPassword']
     if password == confirmation_pwd:
         bdd.add_user(mail, password)
-    index_page()
+    return render_template(page_index, list_citations=bdd.get_all_citations())
 
 
 @app.route('/add_citation/')
