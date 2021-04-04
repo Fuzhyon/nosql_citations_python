@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request
 from db import MongoDBConnector
-from user.models import User
 from flask_pymongo import PyMongo
 
 app = Flask(__name__)
@@ -41,11 +40,6 @@ def add_user():
     if password == confirmation_pwd:
         bdd.add_user(mail, password)
     index_page()
-
-
-@app.route('/user/signup', methods=['GET'])
-def signup():
-    return User().signup()
 
 
 @app.route('/add_citation/')
