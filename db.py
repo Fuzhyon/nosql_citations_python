@@ -16,10 +16,10 @@ class MongoDBConnector:
         return list(self._db.user.find({}))
 
     def add_user(self, mail, password):
-        self._user.insert_one({"mail": mail, "pwd": password})
+        return self._user.insert_one({"mail": mail, "pwd": password})
 
-    def get_user(self):
-        return self._user.find_one()
+    def get_user(self, mail):
+        return self._user.find_one({"mail": mail})
 
     def mail_already_exist(self, mail):
         return self._user.find_one({"mail": mail})
