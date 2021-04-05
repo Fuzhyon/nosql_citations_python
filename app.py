@@ -85,48 +85,85 @@ def add_citation():
     return render_template(page_index, list_citations=bdd.get_all_citations())
 
 
+
+
 @app.route('/', methods=['POST'])
-def research_citation():
-    input_auteur = request.form['auteur']
-    input_citation = request.form['citation']
-    aucune_recherche = input_citation == "" and input_auteur == ""
-    citations = mongo.db.citation
+def research_citation2():
+    print("coucou")
+    input_mode = request.form['mode_recherche']
+    input_research = request.form['recherche']
+    print(input_research)
+    all_citations = mongo.db.citation
     output = []
-    if not aucune_recherche:
-        for c in citations.find():
+    if input_mode == "0":
+        for c in all_citations.find():
+            print(c)
+            y = c['text'].find(input_research)
+            if y != -1:
+                output.append(c)
+        return render_template(page_index, list_citations=output)
+    elif input_mode == "1":
+        for c in all_citations.find():
             print(c)
             if "author" in c:
-                x = c['author'].find(input_auteur)
-                y = c['text'].find(input_citation)
-                if x != -1 and input_citation == "":
-                    output.append({'text': c['text'], 'author': c['author']})
-                if y != -1 and input_auteur == "":
-                    output.append({'text': c['text'], 'author': c['author']})
-                if x != -1 and input_citation != "" and input_auteur != "":
-                    output.append({'text': c['text'], 'author': c['author']})
-                if y != -1 and input_auteur != "" and input_citation != "":
-                    output.append({'text': c['text'], 'author': c['author']})
-            elif "author" not in c and input_citation != "":
-                y = c['text'].find(input_citation)
+                y = c['author'].find(input_research)
                 if y != -1:
-                    output.append({'text': c['text']})
+                    output.append(c)
         return render_template(page_index, list_citations=output)
-    elif aucune_recherche:
+    elif input_mode == "2":
+        for c in all_citations.find():
+            print(c)
+            y = c['text'].find(input_research)
+            if y != -1:
+                output.append(c)
+        return render_template(page_index, list_citations=output)
+    elif input_mode == "3":
+        user = bdd.get_user(session['mail'])
+        list_citations_favorite = []
+        output2=[]
+        for id_cit in user['favorite']:
+            citation = bdd.get_citation(ObjectId(id_cit))
+            list_citations_favorite.append(citation)
+        for c in list_citations_favorite:
+            print(c)
+            y = c['text'].find(input_research)
+            if y != -1:
+                output.append(c)
+        for c in list_citations_favorite:
+            print(c)
+            y = c['author'].find(input_research)
+            if y != -1:
+                output2.append(c)
+        if len(output) < len(output2):
+            return render_template(page_index, list_citations=output2)
+        else:
+            return render_template(page_index, list_citations=output)
+    else:
         return render_template(page_index, list_citations=bdd.get_all_citations())
-
 
 @app.route('/button', methods=['POST'])
 def onclick_delete_citation():
+    print("coucou2")
     id_citation = request.form['delete']
     bdd.delete_citation(ObjectId(id_citation))
     return render_template(page_index, list_citations=bdd.get_all_citations())
 
-@app.route('/button', methods=['POST'])
-def add_favorite():
+@app.route('/favorite', methods=['POST'])
+def add_or_rm_favorite():
+    print("coucou")
+    user = bdd.get_user(session['mail'])
+    print(user)
+    favorite = user['favorite']
+    print(favorite)
+    id_citation = request.form['fav']
+    if id_citation in favorite:
+        bdd.user_remove_favorite(session['mail'],id_citation)
+    else:
+        bdd.user_add_favorite(session['mail'], id_citation)
+
+    print(id_citation)
     return render_template(page_index, list_citations=bdd.get_all_citations())
-@app.route('/button', methods=['POST'])
-def remove_favorite():
-    return render_template(page_index, list_citations=bdd.get_all_citations())
+
 
 
 if __name__ == "__main__":

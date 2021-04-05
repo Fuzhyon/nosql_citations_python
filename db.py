@@ -20,6 +20,17 @@ class MongoDBConnector:
     def get_user(self, mail):
         return self._user.find_one({"mail": mail})
 
+    def user_add_favorite(self, mail, id):
+        user = self.get_user(mail)
+        user['favorite'].append(id)
+        return self._user.update({"mail": mail}, user)
+
+    def user_remove_favorite(self, mail, id):
+        user = self.get_user(mail)
+        user['favorite'].remove(id)
+        return self._user.update({"mail": mail}, user)
+
+
     def mail_already_exist(self, mail):
         return self._user.find_one({"mail": mail})
 

@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
 <body><div class="container">
     <br/>
     <div class="row justify-content-center">
@@ -10,23 +16,23 @@
                         <em class="fas fa-search h4 text-body"></em>
                     </div>
                     <!--end of col-->
-                    <div class="col">
+                    <!--<div class="col">
                         <input name="citation" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Citation">
                     </div>
 
                     <div class="col">
                         <input name="auteur" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Auteur">
+                    </div-->>
+                    <div class="col">
+                        <input name="recherche" class="form-control form-control-lg form-control-borderless" type="search" placeholder="recherche">
                     </div>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Bouton de tri
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Action 1</a>
-                            <a class="dropdown-item" href="#">Action 2</a>
-                            <a class="dropdown-item" href="#">Action 3</a>
-                        </div>
-                    </div>
+                    <select name="mode_recherche" class="form-select" aria-label="Default select example">
+                        <option value="0" selected>Mode de recherche</option>
+                        <option value="1">Auteur</option>
+                        <option value="2">Citation</option>
+                        <option value="3">Favoris</option>
+                        <option value="3">Mes ajout</option>
+                    </select>
                     <!--end of col-->
                     <div class="col-auto">
                         <button onclick="research_citation()" class="btn btn-lg btn-success" type="submit">Rechercher</button>
@@ -62,8 +68,8 @@
             <th scope="col">Date</th>
             <th scope="col">Langue</th>
             {% if 'mail' in session %}
-                <th scope="col">Favoris</th>
-                <th scope="col">Action</th>
+            <th scope="col">Favoris</th>
+            <th scope="col">Action</th>
             {% endif %}
         </tr>
         </thead>
@@ -76,12 +82,12 @@
             <td>{{ elem.langue }}</td>
 
             {% if 'mail' in session %}
-            <td><input disabled="remove_favorite()" checked="add_favorite()" type="checkbox" name="fav" value="{{ elem }}"/></td>
-                {% if elem.added_by == session['mail'] %}
-                    <td><form action = "/button" method="post"><button type="submit" class="btn btn-danger" name="delete" value="{{ elem._id }}" >Supprimer</button></form></td>
-                {% else %}
-                    <td>Non supprimable</td>
-                {% endif %}
+            <td><form action = "/favorite" method="post" ><button  type="submit" class="btn btn-danger" name="fav" value="{{ elem._id }}">Ajouter aux favoris</button></form></td>
+            {% if elem.added_by == session['mail'] %}
+            <td><form action = "/button" method="post"><button type="submit" class="btn btn-danger" name="delete" value="{{ elem._id }}">Supprimer</button></form></td>
+            {% else %}
+            <td>Non supprimable</td>
+            {% endif %}
             {% endif %}
         </tr>
 
