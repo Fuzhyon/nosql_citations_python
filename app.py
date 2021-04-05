@@ -1,11 +1,9 @@
+from bson import ObjectId
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash
-from pkg_resources import require
-
-from db import MongoDBConnector
 from flask_pymongo import PyMongo
 from passlib.hash import pbkdf2_sha256 as encryptor
-from bson import ObjectId
 
+from db import MongoDBConnector
 
 app = Flask(__name__)
 
@@ -45,9 +43,10 @@ def connexion():
             return 'Email ou mot de passe incorrect(s)'
     return render_template('auth/connexion.html')
 
+
 @app.route('/deconnexion/')
 def deconnexion():
-    session.pop('mail',None)
+    session.pop('mail', None)
     return redirect('/')
 
 
@@ -118,11 +117,9 @@ def research_citation():
 
 @app.route('/button', methods=['POST'])
 def onclick_delete_citation():
+    id_citation = request.form['delete']
 
-
-    id = request.form['delete']
-
-    bdd.delete_citation(ObjectId(id))
+    bdd.delete_citation(ObjectId(id_citation))
     return render_template(page_index, list_citations=bdd.get_all_citations())
 
 
