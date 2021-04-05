@@ -62,13 +62,13 @@
         </thead>
         {% for elem in list_citations %}
         <tr>
-            <td>{{elem.text}}</td>
-            <td>{{elem.author}}</td>
-            <td>{{elem.oeuvre}}</td>
-            <td>{{elem.date}}</td>
-            <td>{{elem.langue}}</td>
+            <td>{{ elem.text }}</td>
+            <td>{{ elem.author }}</td>
+            <td>{{ elem.oeuvre }}</td>
+            <td>{{ elem.date }}</td>
+            <td>{{ elem.langue }}</td>
             <td><input type="checkbox" name="fav"/></td>
-            <td><form action = "/button" method="post"><button type="submit" class="btn btn-danger" onclick="onclick_delete_citation('1')">Supp</button></form></td>
+            <td><form action = "/button" method="post"><button type="submit" class="btn btn-danger" name="delete" value="{{ elem._id }}" >Supprimer</button></form></td>
         </tr>
 
         {% endfor %}

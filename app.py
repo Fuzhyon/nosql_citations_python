@@ -28,10 +28,9 @@ def user_list():
     return render_template('user_list.html', list_users=bdd.get_all_user())
 
 
-@app.route('/connexion/', methods=['GET','POST'])
+@app.route('/connexion/', methods=['GET', 'POST'])
 def connexion():
     if request.method == 'POST':
-        users = bdd.get_all_user()
         login_user = bdd.get_user(request.form['mail'])
 
         if login_user:
@@ -65,7 +64,6 @@ def launch_citation():
 
 @app.route('/add_citation/', methods=['POST'])
 def add_citation():
-
     if session['mail']:
         input_citation = request.form['text']
         input_author = request.form['author']
@@ -73,7 +71,7 @@ def add_citation():
         input_date = request.form['year']
         input_langue = request.form['langue']
         if input_citation != "":
-            bdd.add_citation(input_citation, input_author, input_oeuvre, input_date, input_langue,session['mail'])
+            bdd.add_citation(input_citation, input_author, input_oeuvre, input_date, input_langue, session['mail'])
     else:
         flash("Pour être ajouter des citations il faut se connecter")
     return render_template(page_index, list_citations=bdd.get_all_citations())
@@ -110,10 +108,15 @@ def research_citation():
     elif aucune_recherche:
         return render_template(page_index, list_citations=bdd.get_all_citations())
 
+
 @app.route('/button', methods=['POST'])
-def onclick_delete_citation(citation ):
-    test = bdd.get_citation(citation)
-    print(test)
+def onclick_delete_citation():
+    print("truc et id : "+ request.form['delete'])
+    test = bdd.get_citation()
+
+    #print(test)
     return render_template(page_index, list_citations=bdd.get_all_citations())
+
+
 if __name__ == "__main__":
     app.run(debug=True)
