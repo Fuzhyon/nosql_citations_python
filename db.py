@@ -1,4 +1,3 @@
-from flask import jsonify
 from pymongo import MongoClient
 
 
@@ -16,7 +15,7 @@ class MongoDBConnector:
         return list(self._db.user.find({}))
 
     def add_user(self, mail, password):
-        return self._user.insert_one({"mail": mail, "pwd": password,"favorite":[]})
+        return self._user.insert_one({"mail": mail, "pwd": password, "favorite": []})
 
     def get_user(self, mail):
         return self._user.find_one({"mail": mail})
@@ -32,9 +31,9 @@ class MongoDBConnector:
     def add_citation(self, citation, author, oeuvre, date, langue, user):
         return self._citation.insert_one(
             {"text": citation, "author": author, "oeuvre": oeuvre, "date": date, "langue": langue, "added_by": user})
-    def get_citation(self, id):
-        return self._citation.find_one({"_id": id})
-    def delete_citation(self,id):
 
+    def get_citation(self, id_citation):
+        return self._citation.find_one({"_id": id_citation})
 
-        return self._citation.delete_one({"_id": id})
+    def delete_citation(self, id_citation):
+        return self._citation.delete_one({"_id": id_citation})
