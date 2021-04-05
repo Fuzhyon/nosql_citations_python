@@ -72,7 +72,7 @@
             <td>{{ elem.oeuvre }}</td>
             <td>{{ elem.date }}</td>
             <td>{{ elem.langue }}</td>
-            <td><input type="checkbox" name="fav"/></td>
+            <td><input disabled="remove_favorite()" checked="add_favorite()" type="checkbox" name="fav" value="{{ elem }}"/></td>
             {% if elem.added_by == session['mail'] %}
             <td><form action = "/button" method="post"><button type="submit" class="btn btn-danger" name="delete" value="{{ elem._id }}" >Supprimer</button></form></td>
             {% else %}
