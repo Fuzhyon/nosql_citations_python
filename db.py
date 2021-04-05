@@ -31,10 +31,10 @@ class MongoDBConnector:
 
     def add_citation(self, citation, author, oeuvre, date, langue, user):
         return self._citation.insert_one(
-            {"text": citation, "author": author, "oeuvre": oeuvre, "date": date, "langue": langue, "user": user})
-    def get_citation(self, citation):
-        return self._citation.find_one({"text": citation})
-    def delete_citation(self,citation):
-        response = self._citation.delete_one({"text": citation})
-        output = {'Status': 'Successfully Deleted' if response.deleted_count > 0 else "Document not found."}
-        return output
+            {"text": citation, "author": author, "oeuvre": oeuvre, "date": date, "langue": langue, "added_by": user})
+    def get_citation(self, id):
+        return self._citation.find_one({"_id": id})
+    def delete_citation(self,id):
+
+
+        return self._citation.delete_one({"_id": id})

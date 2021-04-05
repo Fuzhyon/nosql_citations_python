@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash
+from pkg_resources import require
+
 from db import MongoDBConnector
 from flask_pymongo import PyMongo
 from passlib.hash import pbkdf2_sha256 as encryptor
+from bson import ObjectId
 
 app = Flask(__name__)
 
@@ -111,10 +114,9 @@ def research_citation():
 
 @app.route('/button', methods=['POST'])
 def onclick_delete_citation():
-    print("truc et id : "+ request.form['delete'])
-    test = bdd.get_citation()
 
-    #print(test)
+    id = request.form['delete']
+    bdd.delete_citation(ObjectId(id))
     return render_template(page_index, list_citations=bdd.get_all_citations())
 
 
