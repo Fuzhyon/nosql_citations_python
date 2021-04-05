@@ -119,7 +119,9 @@ def research_citation():
 @app.route('/button', methods=['POST'])
 def onclick_delete_citation():
 
+
     id = request.form['delete']
+
     bdd.delete_citation(ObjectId(id))
     return render_template(page_index, list_citations=bdd.get_all_citations())
 
