@@ -61,8 +61,10 @@
             <th scope="col">Oeuvre</th>
             <th scope="col">Date</th>
             <th scope="col">Langue</th>
-            <th scope="col">Favoris</th>
-            <th scope="col">Action</th>
+            {% if 'mail' in session %}
+                <th scope="col">Favoris</th>
+                <th scope="col">Action</th>
+            {% endif %}
         </tr>
         </thead>
         {% for elem in list_citations %}
@@ -72,11 +74,14 @@
             <td>{{ elem.oeuvre }}</td>
             <td>{{ elem.date }}</td>
             <td>{{ elem.langue }}</td>
+
+            {% if 'mail' in session %}
             <td><input disabled="remove_favorite()" checked="add_favorite()" type="checkbox" name="fav" value="{{ elem }}"/></td>
-            {% if elem.added_by == session['mail'] %}
-            <td><form action = "/button" method="post"><button type="submit" class="btn btn-danger" name="delete" value="{{ elem._id }}" >Supprimer</button></form></td>
-            {% else %}
-            <td>Non supprimable</td>
+                {% if elem.added_by == session['mail'] %}
+                    <td><form action = "/button" method="post"><button type="submit" class="btn btn-danger" name="delete" value="{{ elem._id }}" >Supprimer</button></form></td>
+                {% else %}
+                    <td>Non supprimable</td>
+                {% endif %}
             {% endif %}
         </tr>
 
