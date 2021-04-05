@@ -110,10 +110,10 @@ def research_citation():
     elif aucune_recherche:
         return render_template(page_index, list_citations=bdd.get_all_citations())
 
-@app.route('/', methods=['GET'])
-def onclick_delete_citation(citation):
-    print("coucou")
+@app.route('/button', methods=['POST'])
+def onclick_delete_citation(citation ):
     test = bdd.get_citation(citation)
     print(test)
+    return render_template(page_index, list_citations=bdd.get_all_citations())
 if __name__ == "__main__":
     app.run(debug=True)
