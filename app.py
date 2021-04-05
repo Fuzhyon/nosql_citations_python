@@ -6,6 +6,7 @@ from flask_pymongo import PyMongo
 from passlib.hash import pbkdf2_sha256 as encryptor
 from bson import ObjectId
 
+
 app = Flask(__name__)
 
 app.config['MONGO_DBNAME'] = 'citations_db'
@@ -43,6 +44,11 @@ def connexion():
                 return redirect(url_for('index'))
             return 'Email ou mot de passe incorrect(s)'
     return render_template('auth/connexion.html')
+
+@app.route('/deconnexion/')
+def deconnexion():
+    session.pop('mail',None)
+    return redirect('/')
 
 
 @app.route('/inscription/', methods=['POST', 'GET'])
@@ -102,11 +108,9 @@ def research_citation():
                 if y != -1 and input_auteur != "" and input_citation != "":
                     output.append({'text': c['text'], 'author': c['author']})
             elif "author" not in c and input_citation != "":
-                print("coucou")
                 y = c['text'].find(input_citation)
                 if y != -1:
                     output.append({'text': c['text']})
-        print(output)
         return render_template(page_index, list_citations=output)
     elif aucune_recherche:
         return render_template(page_index, list_citations=bdd.get_all_citations())
