@@ -162,9 +162,10 @@ def research_citation2():
             return render_template(page_index, list_citations=output)
     elif input_mode == "5":
         print('truc')
-        print(bdd.get_sorted_citation())
-
-        return render_template(page_index, list_citations=bdd.get_all_citations())
+        output3 = bdd.get_sorted_citation()
+        for c in output3:
+            output.append(bdd.get_citation(ObjectId(c['_id'])))
+        return render_template(page_index, list_citations=output)
 
     else:
         return render_template(page_index, list_citations=bdd.get_all_citations())
