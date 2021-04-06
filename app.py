@@ -141,6 +141,29 @@ def research_citation2():
             return render_template(page_index, list_citations=output2)
         else:
             return render_template(page_index, list_citations=output)
+    elif input_mode == "4":
+        user = bdd.get_user(session['mail'])
+        list_citations_favorite = []
+        output2 = []
+        for id_cit in user['mes_ajouts']:
+            citation = bdd.get_citation(ObjectId(id_cit))
+            list_citations_favorite.append(citation)
+        for c in list_citations_favorite:
+            print(c)
+            y = c['text'].find(input_research)
+            if y != -1:
+                output.append(c)
+        for c in list_citations_favorite:
+            print(c)
+            y = c['author'].find(input_research)
+            if y != -1:
+                output2.append(c)
+        if len(output) < len(output2):
+            return render_template(page_index, list_citations=output2)
+        else:
+            return render_template(page_index, list_citations=output)
+
+
     else:
         return render_template(page_index, list_citations=bdd.get_all_citations())
 
@@ -162,6 +185,9 @@ def add_or_rm_favorite():
     else:
         bdd.user_add_favorite(session['mail'], id_citation)
     return render_template(page_index, list_citations=bdd.get_all_citations())
+
+
+
 
 
 
