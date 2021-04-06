@@ -80,6 +80,9 @@ def add_citation():
         input_langue = request.form['langue']
         if input_citation != "":
             bdd.add_citation(input_citation, input_author, input_oeuvre, input_date, input_langue, session['mail'])
+        cit = bdd.get_citationByText(input_citation)
+        bdd.user_add_mes_ajouts(session['mail'],cit["_id"])
+        flash("Vous avez bien ajouter la citation","error")
     else:
         flash("Pour être ajouter des citations il faut se connecter")
     return render_template(page_index, list_citations=bdd.get_all_citations())
@@ -146,22 +149,18 @@ def onclick_delete_citation():
     print("coucou2")
     id_citation = request.form['delete']
     bdd.delete_citation(ObjectId(id_citation))
+    bdd.user_remove_mes_ajouts(session['mail'],id_citation)
     return render_template(page_index, list_citations=bdd.get_all_citations())
 
 @app.route('/favorite', methods=['POST'])
 def add_or_rm_favorite():
-    print("coucou")
     user = bdd.get_user(session['mail'])
-    print(user)
     favorite = user['favorite']
-    print(favorite)
     id_citation = request.form['fav']
     if id_citation in favorite:
         bdd.user_remove_favorite(session['mail'],id_citation)
     else:
         bdd.user_add_favorite(session['mail'], id_citation)
-
-    print(id_citation)
     return render_template(page_index, list_citations=bdd.get_all_citations())
 
 

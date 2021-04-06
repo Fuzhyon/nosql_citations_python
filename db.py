@@ -15,7 +15,7 @@ class MongoDBConnector:
         return list(self._db.user.find({}))
 
     def add_user(self, mail, password):
-        return self._user.insert_one({"mail": mail, "pwd": password, "favorite": []})
+        return self._user.insert_one({"mail": mail, "pwd": password, "favorite": [],"mes_ajouts":[]})
 
     def get_user(self, mail):
         return self._user.find_one({"mail": mail})
@@ -30,6 +30,17 @@ class MongoDBConnector:
         user['favorite'].remove(id)
         return self._user.update({"mail": mail}, user)
 
+    def user_add_mes_ajouts(self, mail, id):
+        user = self.get_user(mail)
+        if user['mes_ajouts']:
+            user['mes_ajouts'].append(id)
+        return self._user.update({"mail": mail}, user)
+
+    def user_remove_mes_ajouts(self, mail, id):
+        user = self.get_user(mail)
+        if user['mes_ajouts']:
+            user['mes_ajouts'].remove(id)
+        return self._user.update({"mail": mail}, user)
 
     def mail_already_exist(self, mail):
         return self._user.find_one({"mail": mail})
@@ -45,6 +56,10 @@ class MongoDBConnector:
 
     def get_citation(self, id_citation):
         return self._citation.find_one({"_id": id_citation})
+
+    def get_citationByText(self, text):
+        return self._citation.find_one({"text": text})
+
 
     def delete_citation(self, id_citation):
         return self._citation.delete_one({"_id": id_citation})
