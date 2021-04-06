@@ -80,14 +80,12 @@ def add_citation():
         input_langue = request.form['langue']
         if input_citation != "":
             bdd.add_citation(input_citation, input_author, input_oeuvre, input_date, input_langue, session['mail'])
-        cit = bdd.get_citationByText(input_citation)
-        bdd.user_add_mes_ajouts(session['mail'],cit["_id"])
-        flash("Vous avez bien ajouter la citation","error")
+        cit = bdd.get_citation_by_text(input_citation)
+        bdd.user_add_mes_ajouts(session['mail'], cit["_id"])
+        flash("Vous avez bien ajouter la citation", "error")
     else:
         flash("Pour être ajouter des citations il faut se connecter")
     return render_template(page_index, list_citations=bdd.get_all_citations())
-
-
 
 
 @app.route('/', methods=['POST'])
@@ -123,7 +121,7 @@ def research_citation2():
     elif input_mode == "3":
         user = bdd.get_user(session['mail'])
         list_citations_favorite = []
-        output2=[]
+        output2 = []
         for id_cit in user['favorite']:
             citation = bdd.get_citation(ObjectId(id_cit))
             list_citations_favorite.append(citation)
@@ -162,18 +160,24 @@ def research_citation2():
             return render_template(page_index, list_citations=output2)
         else:
             return render_template(page_index, list_citations=output)
+    elif input_mode == "5":
+        print('truc')
+        print(bdd.get_sorted_citation())
 
+        return render_template(page_index, list_citations=bdd.get_all_citations())
 
     else:
         return render_template(page_index, list_citations=bdd.get_all_citations())
+
 
 @app.route('/button', methods=['POST'])
 def onclick_delete_citation():
     print("coucou2")
     id_citation = request.form['delete']
     bdd.delete_citation(ObjectId(id_citation))
-    bdd.user_remove_mes_ajouts(session['mail'],id_citation)
+    bdd.user_remove_mes_ajouts(session['mail'], id_citation)
     return render_template(page_index, list_citations=bdd.get_all_citations())
+
 
 @app.route('/favorite', methods=['POST'])
 def add_or_rm_favorite():
@@ -181,14 +185,10 @@ def add_or_rm_favorite():
     favorite = user['favorite']
     id_citation = request.form['fav']
     if id_citation in favorite:
-        bdd.user_remove_favorite(session['mail'],id_citation)
+        bdd.user_remove_favorite(session['mail'], id_citation)
     else:
         bdd.user_add_favorite(session['mail'], id_citation)
     return render_template(page_index, list_citations=bdd.get_all_citations())
-
-
-
-
 
 
 if __name__ == "__main__":
