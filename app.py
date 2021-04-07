@@ -30,6 +30,7 @@ def index():
 
     return render_template(page_index, list_citations=output)
 
+
 def tranform_list(list_to_transform):
     for elem in list_to_transform:
         elem['_id'] = str(elem['_id'])
@@ -79,7 +80,6 @@ def inscription():
 
 @app.route('/add_citation/')
 def launch_citation():
-
     return render_template('add_citation.html')
 
 
@@ -93,14 +93,13 @@ def add_citation():
         input_langue = request.form['langue']
 
         test2 = bdd.get_citation_by_text(input_citation)
-        if input_citation != "" and test2 == None:
+        if input_citation != "" and test2 is None:
             bdd.add_citation(input_citation, input_author, input_oeuvre, input_date, input_langue, session['mail'])
 
             cit = bdd.get_citation_by_text(input_citation)
             bdd.user_add_mes_ajouts(session['mail'], cit['_id'])
 
             print("Vous avez bien ajouté la citation")
-
 
     return redirect('/')
 
@@ -116,7 +115,7 @@ def research_citation2():
             y = c['text'].find(input_research)
             if y != -1:
                 output.append(c)
-        return render_template(page_index, list_citations= tranform_list(output))
+        return render_template(page_index, list_citations=tranform_list(output))
     elif input_mode == "1":
         for c in all_citations.find():
             if "author" in c:
@@ -190,9 +189,8 @@ def onclick_delete_citation():
     bdd.user_remove_mes_ajouts(session['mail'], ObjectId(id_citation))
     bdd.delete_citation(ObjectId(id_citation))
     if ObjectId(id_citation) in session['favorite']:
-        bdd.user_remove_favorite(session['mail'],ObjectId(id_citation))
+        bdd.user_remove_favorite(session['mail'], ObjectId(id_citation))
     return redirect('/')
-
 
 
 @app.route('/favorite', methods=['POST'])
@@ -216,11 +214,20 @@ def stats():
 
     citations = bdd.get_all_citations()
     count = 0
+    top3_citations = bdd.get_sorted_citation()
+    output = []
+    premier_auteur = True
+
+    for citation in top3_citations:
+        if premier_auteur:
+            premier_auteur = False
+            auteur_fav = bdd.get_citation(citation['_id'])['author']
+        output.append(bdd.get_citation(citation['_id']))
     for elem in citations:
         if not elem['author']:
             count += 1
-
-    return render_template('stats.html',meilleur_auteur = bestauthor, meilleur_user = bestuser, citation_sans_auteur = count )
+    return render_template('stats.html', meilleur_auteur=bestauthor, meilleur_user=bestuser, citation_sans_auteur=count,
+                           best_citations=output, auteur_le_plus_fav = auteur_fav)
 
 
 if __name__ == "__main__":

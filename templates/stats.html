@@ -2,18 +2,44 @@
 {% block content %}
 <table class="table">
    <tr>
-      <th colspan="2">Meilleur Auteur</th>
+      <th colspan="2">Auteur le plus cité</th>
       <td colspan="2">{{ meilleur_auteur }}</td>
    </tr>
    <tr>
-      <th colspan="2">Meilleur Utilisateur</th>
+      <th colspan="2">Utilisateur ayant posté le plus de citations</th>
       <td colspan="2">{{ meilleur_user }}</td>
+   </tr>
+    <tr>
+      <th colspan="2">Auteur le plus mis en favori</th>
+      <td colspan="2">{{ auteur_le_plus_fav }}</td>
    </tr>
    <tr>
       <th colspan="2">Nombre de citations sans auteur</th>
       <td colspan="2">{{ citation_sans_auteur }}</td>
    </tr>
+
 </table>
+<h2>Les 3 citations les plus mises en favoris :</h2>
+<table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Citation</th>
+            <th scope="col">Auteur</th>
+            <th scope="col">Oeuvre</th>
+            <th scope="col">Date</th>
+            <th scope="col">Langue</th>
+        </tr>
+        </thead>
+        {% for elem in best_citations %}
+        <tr>
+            <td>{{ elem.text }}</td>
+            <td>{{ elem.author }}</td>
+            <td>{{ elem.oeuvre }}</td>
+            <td>{{ elem.date }}</td>
+            <td>{{ elem.langue }}</td>
+        </tr>
+         {% endfor %}
+    </table>
 
 
 {% endblock %}
