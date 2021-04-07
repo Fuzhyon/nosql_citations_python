@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<body>
+
+<form method="post">
+
+     <div class="form-group">
+      <label for="text">La citation</label>
+      <input  name="text" type="text" class="form-control" id="text" placeholder="Quelle est la citation ?" required>
+    </div>
+    <div class="form-group">
+      <label for="author">L'auteur</label>
+      <input name="author" type="text" class="form-control" id="author" placeholder="Qui a écrit cette citation ?">
+    </div>
+     <div class="form-group">
+      <label for="year">Oeuvre (optionnel)</label>
+      <input name="oeuvre" type="text" class="form-control" id="oeuvre" placeholder="Dans une oeuvre ?">
+    </div>
+    <div class="form-group">
+      <label for="year">Année (optionnel)</label>
+      <input name="year" type="text" class="form-control" id="year" placeholder="En quelle année ?">
+    </div>
+    <div class="form-group">
+      <label for="langue">Langue (optionnel)</label>
+      <input name="langue" type="text" class="form-control" id="langue" placeholder="Dans quelle langage ?">
+    </div>
+  <button onclick="add_citation()" type="submit" class="btn btn-primary">Ajouter</button>
+
+</form>
+
+</body>
+{% endblock %}

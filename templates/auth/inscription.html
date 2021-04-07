@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="/static/css/normalize.css">
+  <div class="card-wrapper">
+
+    <div class="card">
+
+    <h1 class="center">Inscription</h1>
+
+      <form method="post">
+
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" placeholder="waldo@foo.bar" class="field" required>
+
+        <label for="email">Mot de passe</label>
+        <input type="password" name="password" id="password" class="field" required>
+
+        <label for="email">Confirmer le mot de passe</label>
+        <input type="password" name="confirmPassword" id="confirmPassword" class="field" required>
+
+        <p class="error error--hidden"></p>
+
+        <input type="submit" onclick="add_user()" value="S'inscrire" class="btn">
+
+      </form>
+      <p></p>
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="/static/css/normalize.css">
+  <div class="card-wrapper">
+
+    <div class="card">
+
+    <h1 class="center">Connexion</h1>
+
+      <form method="post">
+
+        <label for="mail">Email</label>
+        <input type="email" name="mail" id="mail"  class="field" required>
+
+        <label for="password">Mot de passe</label>
+        <input type="password" name="password" id="password" class="field" required>
+
+        <p class="error error--hidden"></p>
+
+        <input type="submit"  value="Se connecter" class="btn">
+        <div>Pas de compte ? <a href="{{ url_for('inscription') }}">Enregistrez-vous</a></div>
+      </form>
+      <p></p>
+    </div>
+  </div>
+
+{% endblock %}

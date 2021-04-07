@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block content %}
+
+<body><div class="container">
+    <br/>
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <form class="card card-sm" method ="post">
+                <div class="card-body row no-gutters align-items-center">
+                    <div class="col-auto">
+                        <em class="fas fa-search h4 text-body"></em>
+                    </div>
+                    <!--end of col-->
+                    <!--<div class="col">
+                        <input name="citation" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Citation">
+                    </div>
+
+                    <div class="col">
+                        <input name="auteur" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Auteur">
+                    </div-->
+
+                    <div class="col">
+                        <input name="recherche" class="form-control form-control-lg form-control-borderless" type="search" placeholder="recherche">
+                    </div>
+                    <select name="mode_recherche" class="form-select" aria-label="Default select example">
+                        <option value="0" selected>Mode de recherche</option>
+                        <option value="1">Auteur</option>
+                        <option value="2">Citation</option>
+                        {% if 'mail' in session %}
+                        <option value="3">Favoris</option>
+                        <option value="4">Mes ajouts</option>
+                        {% endif %}
+
+                        <option value="5">Best citations</option>
+                    </select>
+                    <!--end of col-->
+                    <div class="col-auto">
+                        <button onclick="research_citation()" class="btn btn-lg btn-success" type="submit">Rechercher</button>
+                    </div>
+
+                </div>
+            </form>
+
+
+        </div>
+        {% if 'mail' in session %}
+        <div class="col-auto">
+            <a href="add_citation"><button class="btn btn-primary">Ajouter</button></a>
+            <a href="deconnexion"><button class="btn btn-primary">Déconnexion</button></a>
+        </div>
+        {% else %}
+        <div class="col-auto">
+            <a href="connexion"><button class="btn btn-primary">Connexion</button></a>
+            <a href="inscription"><button class="btn btn-primary">Inscription</button></a>
+        </div>
+        {% endif %}
+        <div class="col-auto">
+            <a href="stats"><button class="btn btn-primary">Statistiques</button></a>
+        </div>
+    </div>
+
+</div>
+<div>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Citation</th>
+            <th scope="col">Auteur</th>
+            <th scope="col">Oeuvre</th>
+            <th scope="col">Date</th>
+            <th scope="col">Langue</th>
+            {% if 'mail' in session %}
+            <th scope="col">Favoris</th>
+            <th scope="col">Action</th>
+            {% endif %}
+        </tr>
+        </thead>
+        {% for elem in list_citations %}
+        <tr>
+            <td>{{ elem.text }}</td>
+            <td>{{ elem.author }}</td>
+            <td>{{ elem.oeuvre }}</td>
+            <td>{{ elem.date }}</td>
+            <td>{{ elem.langue }}</td>
+
+            {% if 'mail' in session %}
+                {% if elem._id in session['favorite'] %}
+                <td><form action = "/favorite" method="post" ><button  type="submit" class="btn btn-danger" name="fav" value="{{ elem._id }}">Enlever des favoris</button></form></td>
+                {% else %}
+                <td><form action = "/favorite" method="post" ><button  type="submit" class="btn btn-warning" name="fav" value="{{ elem._id }}">Ajouter aux favoris</button></form></td>
+                {% endif %}
+                {% if elem.added_by == session['mail'] %}
+                    <td><form action = "/button" method="post"><button type="submit" class="btn btn-danger" name="delete" value="{{ elem._id }}">Supprimer</button></form></td>
+                {% else %}
+                    <td>Non supprimable</td>
+                {% endif %}
+            {% endif %}
+        </tr>
+
+        {% endfor %}
+    </table>
+</div>
+</body>
+{% endblock %}
