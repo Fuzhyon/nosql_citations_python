@@ -167,7 +167,7 @@ def research_citation2():
         return render_template(page_index, list_citations=bdd.get_all_citations())
 
 
-@app.route('/button/', methods=['POST'])
+@app.route('/button', methods=['POST'])
 def onclick_delete_citation():
     id_citation = request.form['delete']
     bdd.delete_citation(ObjectId(id_citation))
@@ -175,7 +175,7 @@ def onclick_delete_citation():
     return render_template(page_index, list_citations=bdd.get_all_citations())
 
 
-@app.route('/favorite/', methods=['POST'])
+@app.route('/favorite', methods=['POST'])
 def add_or_rm_favorite():
     user = bdd.get_user(session['mail'])
     favorite = user['favorite']
@@ -185,6 +185,7 @@ def add_or_rm_favorite():
         bdd.user_remove_favorite(session['mail'], id_citation)
     else:
         bdd.user_add_favorite(session['mail'], id_citation)
+    session['favorite'] = bdd.get_user(session['mail'])['favorite']
     return redirect('/')
 
 if __name__ == "__main__":

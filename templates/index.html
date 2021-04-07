@@ -82,7 +82,7 @@
                 {% if elem._id in session['favorite'] %}
                 <td><form action = "/favorite" method="post" ><button  type="submit" class="btn btn-danger" name="fav" value="{{ elem._id }}">Enlever des favoris</button></form></td>
                 {% else %}
-                <td><form action = "/favorite" method="post" ><button  type="submit" class="btn btn-danger" name="fav" value="{{ elem._id }}">Ajouter aux favoris</button></form></td>
+                <td><form action = "/favorite" method="post" ><button  type="submit" class="btn btn-warning" name="fav" value="{{ elem._id }}">Ajouter aux favoris</button></form></td>
                 {% endif %}
                 {% if elem.added_by == session['mail'] %}
                     <td><form action = "/button" method="post"><button type="submit" class="btn btn-danger" name="delete" value="{{ elem._id }}">Supprimer</button></form></td>
