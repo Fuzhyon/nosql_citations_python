@@ -1,3 +1,4 @@
+from bson import ObjectId
 from pymongo import MongoClient
 
 
@@ -45,6 +46,9 @@ class MongoDBConnector:
     def mail_already_exist(self, mail):
         return self._user.find_one({"mail": mail})
 
+
+    # CITATIONS
+
     def get_sorted_citation(self):
         output = []
         query = self._user.aggregate([{"$unwind": "$favorite"},{"$group": {"_id": "$favorite", "sum": {"$sum": 1}}}])
@@ -52,10 +56,8 @@ class MongoDBConnector:
             output.append(doc)
         return sorted(output, key=lambda k: k['sum'],reverse=True)
 
-
-    # CITATIONS
-
     def get_all_citations(self):
+        print(self._citation.find({}))
         return list(self._citation.find({}))
 
     def add_citation(self, citation, author, oeuvre, date, langue, user):
@@ -63,7 +65,7 @@ class MongoDBConnector:
             {"text": citation, "author": author, "oeuvre": oeuvre, "date": date, "langue": langue, "added_by": user})
 
     def get_citation(self, id_citation):
-        return self._citation.find_one({"_id": id_citation})
+        return self._citation.find_one({"_id": ObjectId(id_citation)})
 
     def get_citation_by_text(self, text):
         return self._citation.find_one({"text": text})

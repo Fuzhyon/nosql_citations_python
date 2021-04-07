@@ -1,3 +1,5 @@
+import bson
+import json
 from bson import ObjectId
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash
 from flask_pymongo import PyMongo
@@ -22,7 +24,10 @@ def index():
         print("Connecté avec l'adresse : " + session['mail'])
     else:
         print("Non connecté")
-    return render_template(page_index, list_citations=bdd.get_all_citations())
+    output = bdd.get_all_citations()
+    for elem in output:
+        elem['_id'] = str(elem['_id'])
+    return render_template(page_index, list_citations=output)
 
 
 @app.route('/user_list/')
@@ -38,8 +43,9 @@ def connexion():
         if login_user:
             if encryptor.verify(request.form['password'], login_user['pwd']):
                 session['mail'] = request.form['mail']
-                print(session)
-                return redirect(url_for('index'))
+                session['favorite'] = login_user['favorite']
+                print(session['favorite'])
+                return redirect('/')
             return 'Email ou mot de passe incorrect(s)'
     return render_template('auth/connexion.html')
 
@@ -90,22 +96,18 @@ def add_citation():
 
 @app.route('/', methods=['POST'])
 def research_citation2():
-    print("coucou")
     input_mode = request.form['mode_recherche']
     input_research = request.form['recherche']
-    print(input_research)
     all_citations = mongo.db.citation
     output = []
     if input_mode == "0":
         for c in all_citations.find():
-            print(c)
             y = c['text'].find(input_research)
             if y != -1:
                 output.append(c)
         return render_template(page_index, list_citations=output)
     elif input_mode == "1":
         for c in all_citations.find():
-            print(c)
             if "author" in c:
                 y = c['author'].find(input_research)
                 if y != -1:
@@ -113,7 +115,6 @@ def research_citation2():
         return render_template(page_index, list_citations=output)
     elif input_mode == "2":
         for c in all_citations.find():
-            print(c)
             y = c['text'].find(input_research)
             if y != -1:
                 output.append(c)
@@ -126,12 +127,10 @@ def research_citation2():
             citation = bdd.get_citation(ObjectId(id_cit))
             list_citations_favorite.append(citation)
         for c in list_citations_favorite:
-            print(c)
             y = c['text'].find(input_research)
             if y != -1:
                 output.append(c)
         for c in list_citations_favorite:
-            print(c)
             y = c['author'].find(input_research)
             if y != -1:
                 output2.append(c)
@@ -147,12 +146,10 @@ def research_citation2():
             citation = bdd.get_citation(ObjectId(id_cit))
             list_citations_favorite.append(citation)
         for c in list_citations_favorite:
-            print(c)
             y = c['text'].find(input_research)
             if y != -1:
                 output.append(c)
         for c in list_citations_favorite:
-            print(c)
             y = c['author'].find(input_research)
             if y != -1:
                 output2.append(c)
@@ -161,7 +158,6 @@ def research_citation2():
         else:
             return render_template(page_index, list_citations=output)
     elif input_mode == "5":
-        print('truc')
         output3 = bdd.get_sorted_citation()
         for c in output3:
             output.append(bdd.get_citation(ObjectId(c['_id'])))
@@ -171,26 +167,25 @@ def research_citation2():
         return render_template(page_index, list_citations=bdd.get_all_citations())
 
 
-@app.route('/button', methods=['POST'])
+@app.route('/button/', methods=['POST'])
 def onclick_delete_citation():
-    print("coucou2")
     id_citation = request.form['delete']
     bdd.delete_citation(ObjectId(id_citation))
     bdd.user_remove_mes_ajouts(session['mail'], id_citation)
     return render_template(page_index, list_citations=bdd.get_all_citations())
 
 
-@app.route('/favorite', methods=['POST'])
+@app.route('/favorite/', methods=['POST'])
 def add_or_rm_favorite():
     user = bdd.get_user(session['mail'])
     favorite = user['favorite']
     id_citation = request.form['fav']
+    print(type(id_citation))
     if id_citation in favorite:
         bdd.user_remove_favorite(session['mail'], id_citation)
     else:
         bdd.user_add_favorite(session['mail'], id_citation)
-    return render_template(page_index, list_citations=bdd.get_all_citations())
-
+    return redirect('/')
 
 if __name__ == "__main__":
     app.run(debug=True)

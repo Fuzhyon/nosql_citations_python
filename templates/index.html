@@ -17,7 +17,7 @@
 
                     <div class="col">
                         <input name="auteur" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Auteur">
-                    </div-->>
+                    </div-->
 
                     <div class="col">
                         <input name="recherche" class="form-control form-control-lg form-control-borderless" type="search" placeholder="recherche">
@@ -27,7 +27,7 @@
                         <option value="1">Auteur</option>
                         <option value="2">Citation</option>
                         <option value="3">Favoris</option>
-                        <option value="4">Mes ajout</option>
+                        <option value="4">Mes ajouts</option>
                         <option value="5">Best citations</option>
                     </select>
                     <!--end of col-->
@@ -79,12 +79,16 @@
             <td>{{ elem.langue }}</td>
 
             {% if 'mail' in session %}
-            <td><form action = "/favorite" method="post" ><button  type="submit" class="btn btn-danger" name="fav" value="{{ elem._id }}">Ajouter aux favoris</button></form></td>
-            {% if elem.added_by == session['mail'] %}
-            <td><form action = "/button" method="post"><button type="submit" class="btn btn-danger" name="delete" value="{{ elem._id }}">Supprimer</button></form></td>
-            {% else %}
-            <td>Non supprimable</td>
-            {% endif %}
+                {% if elem._id in session['favorite'] %}
+                <td><form action = "/favorite" method="post" ><button  type="submit" class="btn btn-danger" name="fav" value="{{ elem._id }}">Enlever des favoris</button></form></td>
+                {% else %}
+                <td><form action = "/favorite" method="post" ><button  type="submit" class="btn btn-danger" name="fav" value="{{ elem._id }}">Ajouter aux favoris</button></form></td>
+                {% endif %}
+                {% if elem.added_by == session['mail'] %}
+                    <td><form action = "/button" method="post"><button type="submit" class="btn btn-danger" name="delete" value="{{ elem._id }}">Supprimer</button></form></td>
+                {% else %}
+                    <td>Non supprimable</td>
+                {% endif %}
             {% endif %}
         </tr>
 
