@@ -33,14 +33,15 @@ class MongoDBConnector:
 
     def user_add_mes_ajouts(self, mail, id_citation):
         user = self.get_user(mail)
-        if user['mes_ajouts']:
+        if user:
             user['mes_ajouts'].append(id_citation)
         return self._user.update({"mail": mail}, user)
 
     def user_remove_mes_ajouts(self, mail, id_citation):
         user = self.get_user(mail)
-        if user['mes_ajouts']:
-            user['mes_ajouts'].remove(id_citation)
+        if user:
+            if id_citation in user['mes_ajouts']:
+                user['mes_ajouts'].pop(id_citation)
         return self._user.update({"mail": mail}, user)
 
     def mail_already_exist(self, mail):

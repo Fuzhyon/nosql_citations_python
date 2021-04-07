@@ -87,11 +87,10 @@ def add_citation():
         if input_citation != "":
             bdd.add_citation(input_citation, input_author, input_oeuvre, input_date, input_langue, session['mail'])
         cit = bdd.get_citation_by_text(input_citation)
-        bdd.user_add_mes_ajouts(session['mail'], cit["_id"])
-        flash("Vous avez bien ajouter la citation", "error")
-    else:
-        flash("Pour être ajouter des citations il faut se connecter")
-    return render_template(page_index, list_citations=bdd.get_all_citations())
+        bdd.user_add_mes_ajouts(session['mail'], cit)
+        print("Vous avez bien ajouté la citation")
+
+    return redirect('/')
 
 
 @app.route('/', methods=['POST'])
@@ -170,9 +169,10 @@ def research_citation2():
 @app.route('/button', methods=['POST'])
 def onclick_delete_citation():
     id_citation = request.form['delete']
-    bdd.delete_citation(ObjectId(id_citation))
+    print(id_citation)
     bdd.user_remove_mes_ajouts(session['mail'], id_citation)
-    return render_template(page_index, list_citations=bdd.get_all_citations())
+    bdd.delete_citation(id_citation)
+    return redirect('/')
 
 
 @app.route('/favorite', methods=['POST'])
