@@ -188,5 +188,9 @@ def add_or_rm_favorite():
     session['favorite'] = bdd.get_user(session['mail'])['favorite']
     return redirect('/')
 
+@app.route('/stats', methods=['GET'])
+def stats():
+    return render_template('stats.html')
+
 if __name__ == "__main__":
     app.run(debug=True)
