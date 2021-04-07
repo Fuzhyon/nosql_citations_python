@@ -41,7 +41,8 @@ class MongoDBConnector:
         user = self.get_user(mail)
         if user:
             if id_citation in user['mes_ajouts']:
-                user['mes_ajouts'].pop(id_citation)
+                user['mes_ajouts'].remove(id_citation)
+
         return self._user.update({"mail": mail}, user)
 
     def mail_already_exist(self, mail):
@@ -56,6 +57,20 @@ class MongoDBConnector:
         for doc in query:
             output.append(doc)
         return sorted(output, key=lambda k: k['sum'],reverse=True)
+
+    def best_author(self):
+        output = []
+        query = self._citation.aggregate([{ "$group": {"_id": "$author", "count": { "$sum": 1}}},{"$sort": {"count": -1}},{"$limit": 1}] )
+        for doc in query:
+            output.append(doc)
+        return output
+
+    def best_user(self):
+        output = []
+        query = self._user.aggregate([{"$project":{" id": "$mail", "count": {"$size":{"$ifNull":["$mes_ajouts",[]]} } }},{"$sort" : {"count" : -1}},{"$limit" : 1 }])
+        for doc in query:
+            output.append(doc)
+        return output
 
     def get_all_citations(self):
         print(self._citation.find({}))

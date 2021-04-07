@@ -73,6 +73,7 @@ def inscription():
 
 @app.route('/add_citation/')
 def launch_citation():
+
     return render_template('add_citation.html')
 
 
@@ -84,11 +85,20 @@ def add_citation():
         input_oeuvre = request.form['oeuvre']
         input_date = request.form['year']
         input_langue = request.form['langue']
-        if input_citation != "":
+
+        test2 = bdd.get_citation_by_text(input_citation)
+        print(test2)
+        print("coucou")
+
+        print(input_citation)
+
+
+        if input_citation != "" and test2 == None:
             bdd.add_citation(input_citation, input_author, input_oeuvre, input_date, input_langue, session['mail'])
-        cit = bdd.get_citation_by_text(input_citation)
-        bdd.user_add_mes_ajouts(session['mail'], cit)
-        print("Vous avez bien ajouté la citation")
+            cit = bdd.get_citation_by_text(input_citation)
+            bdd.user_add_mes_ajouts(session['mail'], cit['_id'])
+
+            print("Vous avez bien ajouté la citation")
 
     return redirect('/')
 
@@ -170,9 +180,9 @@ def research_citation2():
 def onclick_delete_citation():
     id_citation = request.form['delete']
     print(id_citation)
-    bdd.user_remove_mes_ajouts(session['mail'], id_citation)
-    bdd.delete_citation(id_citation)
-    return redirect('/')
+    bdd.user_remove_mes_ajouts(session['mail'], ObjectId(id_citation))
+    bdd.delete_citation(ObjectId(id_citation))
+    return render_template(page_index, list_citations=bdd.get_all_citations())
 
 
 @app.route('/favorite', methods=['POST'])
@@ -188,9 +198,15 @@ def add_or_rm_favorite():
     session['favorite'] = bdd.get_user(session['mail'])['favorite']
     return redirect('/')
 
+
 @app.route('/stats', methods=['GET'])
 def stats():
+    test = bdd.best_author()
+    print(test)
+    test2 = bdd.best_user()
+    print(test2)
     return render_template('stats.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
