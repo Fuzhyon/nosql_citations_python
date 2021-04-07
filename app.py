@@ -27,7 +27,13 @@ def index():
     output = bdd.get_all_citations()
     for elem in output:
         elem['_id'] = str(elem['_id'])
+
     return render_template(page_index, list_citations=output)
+
+def tranform_list(list_to_transform):
+    for elem in list_to_transform:
+        elem['_id'] = str(elem['_id'])
+    return list_to_transform
 
 
 @app.route('/user_list/')
@@ -44,7 +50,7 @@ def connexion():
             if encryptor.verify(request.form['password'], login_user['pwd']):
                 session['mail'] = request.form['mail']
                 session['favorite'] = login_user['favorite']
-                print(session['favorite'])
+
                 return redirect('/')
             return 'Email ou mot de passe incorrect(s)'
     return render_template('auth/connexion.html')
@@ -87,12 +93,6 @@ def add_citation():
         input_langue = request.form['langue']
 
         test2 = bdd.get_citation_by_text(input_citation)
-        print(test2)
-        print("coucou")
-
-        print(input_citation)
-
-
         if input_citation != "" and test2 == None:
             bdd.add_citation(input_citation, input_author, input_oeuvre, input_date, input_langue, session['mail'])
 
@@ -116,20 +116,20 @@ def research_citation2():
             y = c['text'].find(input_research)
             if y != -1:
                 output.append(c)
-        return render_template(page_index, list_citations=output)
+        return render_template(page_index, list_citations= tranform_list(output))
     elif input_mode == "1":
         for c in all_citations.find():
             if "author" in c:
                 y = c['author'].find(input_research)
                 if y != -1:
                     output.append(c)
-        return render_template(page_index, list_citations=output)
+        return render_template(page_index, list_citations=tranform_list(output))
     elif input_mode == "2":
         for c in all_citations.find():
             y = c['text'].find(input_research)
             if y != -1:
                 output.append(c)
-        return render_template(page_index, list_citations=output)
+        return render_template(page_index, list_citations=tranform_list(output))
     elif input_mode == "3":
         user = bdd.get_user(session['mail'])
         list_citations_favorite = []
@@ -137,18 +137,25 @@ def research_citation2():
         for id_cit in user['favorite']:
             citation = bdd.get_citation(ObjectId(id_cit))
             list_citations_favorite.append(citation)
-        for c in list_citations_favorite:
-            y = c['text'].find(input_research)
-            if y != -1:
-                output.append(c)
-        for c in list_citations_favorite:
-            y = c['author'].find(input_research)
-            if y != -1:
-                output2.append(c)
-        if len(output) < len(output2):
-            return render_template(page_index, list_citations=output2)
+        if input_research is not None and input_research != "":
+            for c in list_citations_favorite:
+                y = c['text'].find(input_research)
+                if y != -1:
+                    output.append(c)
+            for c in list_citations_favorite:
+                y = c['author'].find(input_research)
+                if y != -1:
+                    output2.append(c)
+            if len(output) < len(output2):
+                return render_template(page_index, list_citations=tranform_list(output2))
+            else:
+                return render_template(page_index, list_citations=tranform_list(output))
         else:
-            return render_template(page_index, list_citations=output)
+
+            for elem in list_citations_favorite:
+                if elem:
+                    output.append(elem)
+            return render_template(page_index, list_citations=tranform_list(output))
     elif input_mode == "4":
         user = bdd.get_user(session['mail'])
         list_citations_favorite = []
@@ -165,15 +172,14 @@ def research_citation2():
             if y != -1:
                 output2.append(c)
         if len(output) < len(output2):
-            return render_template(page_index, list_citations=output2)
+            return render_template(page_index, list_citations=tranform_list(output2))
         else:
-            return render_template(page_index, list_citations=output)
+            return render_template(page_index, list_citations=tranform_list(output))
     elif input_mode == "5":
         output3 = bdd.get_sorted_citation()
         for c in output3:
             output.append(bdd.get_citation(ObjectId(c['_id'])))
-        return render_template(page_index, list_citations=output)
-
+        return render_template(page_index, list_citations=tranform_list(output))
     else:
         return render_template(page_index, list_citations=bdd.get_all_citations())
 
@@ -181,16 +187,12 @@ def research_citation2():
 @app.route('/button', methods=['POST'])
 def onclick_delete_citation():
     id_citation = request.form['delete']
-<<<<<<< HEAD
-    bdd.user_remove_mes_ajouts(session['mail'], id_citation)
-    bdd.delete_citation(id_citation)
-    return redirect('/')
-=======
-    print(id_citation)
     bdd.user_remove_mes_ajouts(session['mail'], ObjectId(id_citation))
     bdd.delete_citation(ObjectId(id_citation))
-    return render_template(page_index, list_citations=bdd.get_all_citations())
->>>>>>> jeffrey
+    if ObjectId(id_citation) in session['favorite']:
+        bdd.user_remove_favorite(session['mail'],ObjectId(id_citation))
+    return redirect('/')
+
 
 
 @app.route('/favorite', methods=['POST'])
@@ -198,7 +200,7 @@ def add_or_rm_favorite():
     user = bdd.get_user(session['mail'])
     favorite = user['favorite']
     id_citation = request.form['fav']
-    print(type(id_citation))
+
     if id_citation in favorite:
         bdd.user_remove_favorite(session['mail'], id_citation)
     else:

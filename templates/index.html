@@ -26,8 +26,11 @@
                         <option value="0" selected>Mode de recherche</option>
                         <option value="1">Auteur</option>
                         <option value="2">Citation</option>
+                        {% if 'mail' in session %}
                         <option value="3">Favoris</option>
                         <option value="4">Mes ajouts</option>
+                        {% endif %}
+
                         <option value="5">Best citations</option>
                     </select>
                     <!--end of col-->
