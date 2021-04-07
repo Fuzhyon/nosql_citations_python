@@ -1,4 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Stats</h1>
+<p>Le meilleur auteur est {{ meilleur_auteur }}</p>
+<p>Le meilleur utilisateur est {{ meilleur_user }}</p>
+<p>Nombre de citations sans auteur: {{ citation_sans_auteur }}</p>
 {% endblock %}

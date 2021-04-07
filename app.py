@@ -95,10 +95,12 @@ def add_citation():
         test2 = bdd.get_citation_by_text(input_citation)
         if input_citation != "" and test2 == None:
             bdd.add_citation(input_citation, input_author, input_oeuvre, input_date, input_langue, session['mail'])
+
             cit = bdd.get_citation_by_text(input_citation)
             bdd.user_add_mes_ajouts(session['mail'], cit['_id'])
 
             print("Vous avez bien ajouté la citation")
+
 
     return redirect('/')
 
@@ -192,6 +194,7 @@ def onclick_delete_citation():
     return redirect('/')
 
 
+
 @app.route('/favorite', methods=['POST'])
 def add_or_rm_favorite():
     user = bdd.get_user(session['mail'])
@@ -208,11 +211,16 @@ def add_or_rm_favorite():
 
 @app.route('/stats', methods=['GET'])
 def stats():
-    test = bdd.best_author()
-    print(test)
-    test2 = bdd.best_user()
-    print(test2)
-    return render_template('stats.html')
+    bestauthor = str(bdd.best_author()[0]['_id'])
+    bestuser = str(bdd.best_user()[0][' id'])
+
+    citations = bdd.get_all_citations()
+    count = 0
+    for elem in citations:
+        if not elem['author']:
+            count += 1
+
+    return render_template('stats.html',meilleur_auteur = bestauthor, meilleur_user = bestuser, citation_sans_auteur = count )
 
 
 if __name__ == "__main__":
