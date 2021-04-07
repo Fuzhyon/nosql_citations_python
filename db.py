@@ -53,7 +53,7 @@ class MongoDBConnector:
 
     def get_sorted_citation(self):
         output = []
-        query = self._user.aggregate([{"$unwind": "$favorite"},{"$group": {"_id": "$favorite", "sum": {"$sum": 1}}}])
+        query = self._user.aggregate([{"$unwind": "$favorite"},{"$group": {"_id": "$favorite", "sum": {"$sum": 1}}},{"$limit" : 3 }])
         for doc in query:
             output.append(doc)
         return sorted(output, key=lambda k: k['sum'],reverse=True)
