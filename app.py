@@ -211,11 +211,16 @@ def add_or_rm_favorite():
 
 @app.route('/stats', methods=['GET'])
 def stats():
-    test = bdd.best_author()
-    print(test)
-    test2 = bdd.best_user()
-    print(test2)
-    return render_template('stats.html')
+    bestauthor = str(bdd.best_author()[0]['_id'])
+    bestuser = str(bdd.best_user()[0][' id'])
+
+    citations = bdd.get_all_citations()
+    count = 0
+    for elem in citations:
+        if not elem['author']:
+            count += 1
+
+    return render_template('stats.html',meilleur_auteur = bestauthor, meilleur_user = bestuser, citation_sans_auteur = count )
 
 
 if __name__ == "__main__":
