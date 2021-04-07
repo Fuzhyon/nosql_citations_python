@@ -67,7 +67,7 @@ class MongoDBConnector:
 
     def best_user(self):
         output = []
-        query = self._user.aggregate([{"$project":{" id": "$mail", "count": {"$size":{"$ifNull":["$mes_ajouts",[]]} } }},{"$sort" : {"count" : -1}},{"$limit" : 1 }])
+        query = self._user.aggregate([{"$project":{"id": "$mail", "count": {"$size":{"$ifNull":["$mes_ajouts",[]]} } }},{"$sort" : {"count" : -1}},{"$limit" : 1 }])
         for doc in query:
             output.append(doc)
         return output
