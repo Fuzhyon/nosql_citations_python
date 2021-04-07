@@ -37,9 +37,7 @@ def tranform_list(list_to_transform):
     return list_to_transform
 
 
-@app.route('/user_list/')
-def user_list():
-    return render_template('user_list.html', list_users=bdd.get_all_user())
+
 
 
 @app.route('/connexion/', methods=['GET', 'POST'])
