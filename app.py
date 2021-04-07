@@ -27,7 +27,7 @@ def index():
     output = bdd.get_all_citations()
     for elem in output:
         elem['_id'] = str(elem['_id'])
-        print(elem)
+
     return render_template(page_index, list_citations=output)
 
 def tranform_list(list_to_transform):
@@ -50,7 +50,7 @@ def connexion():
             if encryptor.verify(request.form['password'], login_user['pwd']):
                 session['mail'] = request.form['mail']
                 session['favorite'] = login_user['favorite']
-                print(session['favorite'])
+
                 return redirect('/')
             return 'Email ou mot de passe incorrect(s)'
     return render_template('auth/connexion.html')
@@ -93,12 +93,6 @@ def add_citation():
         input_langue = request.form['langue']
 
         test2 = bdd.get_citation_by_text(input_citation)
-        print(test2)
-        print("coucou")
-
-        print(input_citation)
-
-
         if input_citation != "" and test2 == None:
             bdd.add_citation(input_citation, input_author, input_oeuvre, input_date, input_langue, session['mail'])
             cit = bdd.get_citation_by_text(input_citation)
@@ -155,7 +149,7 @@ def research_citation2():
             else:
                 return render_template(page_index, list_citations=tranform_list(output))
         else:
-            print(list_citations_favorite)
+
             for elem in list_citations_favorite:
                 if elem:
                     output.append(elem)
@@ -181,9 +175,7 @@ def research_citation2():
             return render_template(page_index, list_citations=tranform_list(output))
     elif input_mode == "5":
         output3 = bdd.get_sorted_citation()
-        print(output3)
         for c in output3:
-            print(c)
             output.append(bdd.get_citation(ObjectId(c['_id'])))
         return render_template(page_index, list_citations=tranform_list(output))
     else:
@@ -193,7 +185,6 @@ def research_citation2():
 @app.route('/button', methods=['POST'])
 def onclick_delete_citation():
     id_citation = request.form['delete']
-    print(id_citation)
     bdd.user_remove_mes_ajouts(session['mail'], ObjectId(id_citation))
     bdd.delete_citation(ObjectId(id_citation))
     if ObjectId(id_citation) in session['favorite']:
@@ -206,7 +197,7 @@ def add_or_rm_favorite():
     user = bdd.get_user(session['mail'])
     favorite = user['favorite']
     id_citation = request.form['fav']
-    print(type(id_citation))
+
     if id_citation in favorite:
         bdd.user_remove_favorite(session['mail'], id_citation)
     else:
