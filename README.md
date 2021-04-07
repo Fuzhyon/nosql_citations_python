@@ -1,88 +1,91 @@
 # nosql_citations_python
-# Project Title
 
-One Paragraph of project description goes here
+## Participants du Projet
 
-## Getting Started
+Ce projet à été élaboré par Jeffrey Fevre et Chris Domingues.
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+### Jeu de Données de test
 
-### Prerequisites
+Après avoir cloné le projet.
 
-What things you need to install the software and how to install them
+Un jeu de données de test est fourni pour le projet.
 
-```
-Give examples
-```
+Ce jeu de données est notre base "Citations_db" qui contient deux collections (citations et user).
 
-### Installing
+Sur Windows: 
 
-A step by step series of examples that tell you how to get a development env running
+Les fichiers se situent dans le dossier db_mongo.
 
-Say what the step will be
+Pour installer cette base de données il faut lancer mongod.exe en arrière plan, extraire l'archive citations_db, se situer dans le dossier d'extraction
+et lancer une invite de commandes dans ce même dossier.
 
-```
-Give the example
-```
+Une fois sur l'invite de commande :
+Il faut écrire (en ayant mongo dans le path de windows) :
 
-And repeat
-
-```
-until finished
+``` bash
+mongorestore -d citations_db citations_db
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+Une fois ceci effectué, la base de données sera installé sur votre mongod.
 
-## Running the tests
+### Installation du Python et de ses librairies
 
-Explain how to run the automated tests for this system
+Avoir Python 3.8 ou supérieur installé sur son ordinateur est nécéssaire, et celui-ci doit être présent dans le path de windows.
+Voici un lien d'installation : https://www.python.org/downloads/windows/
 
-### Break down into end to end tests
+Une fois python installé sur votre machine, il faut créer un environnement de travail en python.
+Pour cela, il faut ouvrir une invite de commande dans le dossier du projet (la ou se situe le requirements.txt)
 
-Explain what these tests test and why
+Puis rentrer les commandes suivantes :
 
+```bash
+python -m venv citation_env
 ```
-Give an example
+puis
+
+```bash
+citation_env\\Scripts\\activate.bat
 ```
 
-### And coding style tests
+Sur la gauche, vous verrez (citation_env) entre paranthèse dans votre invite de commande.
 
-Explain what these tests test and why
+Il faut maintenant installer toutes les librairies utilisées dans le projet.
 
+Pour cela, éxécutez la commande suivante :
+
+```bash
+pip install -r requirements.txt
 ```
-Give an example
+
+Une fois ceci installé, vous pourrez lancer le programme.
+
+
+## Lancer le programme
+
+Pour lancer le programme, rien de plus simple ;) 
+
+Vérifiez que mongod.exe tourne en arrière plan, que la base de données à bien été installée comme indiqué précédemment
+et lancez la commande suivante dans votre interface de commandes toujours à la racine du projet (la ou se situe app.py):
+
+```bash
+python app.py
 ```
 
-## Deployment
+Ensuite, rendez-vous sur votre navigateur préféré sur l'adresse http://127.0.0.1:5000/
 
-Add additional notes about how to deploy this on a live system
+Voila ! Vous pouvez manipuler notre projet de citations.
 
-## Built With
+### Point supplémentaire
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+Afin d'exploiter certaines fonctionnalités du site, il est nécéssaire de se créer un compte utilisateur, et de se connecter par la suite.
 
-## Contributing
+Les mots de passes pour les autres comptes utilisateurs dans notre jeu de données de test sont tous : 01234
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+### Mot de la fin
 
-## Versioning
+Merci pour ce TP qui nous à permis de découvrir le NoSQL avec MongoDB, et le framework Flask en python que nous tennions à essayer,
+ce projet à été l'occasion de tester les diverses fonctionnalités de ce dernier.
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+Cordialement, 
 
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+Jeffrey et Chris.
