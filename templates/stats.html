@@ -1,6 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
-<p>Le meilleur auteur est {{ meilleur_auteur }}</p>
-<p>Le meilleur utilisateur est {{ meilleur_user }}</p>
-<p>Nombre de citations sans auteur: {{ citation_sans_auteur }}</p>
+<table class="table">
+   <tr>
+      <th colspan="2">Meilleur Auteur</th>
+      <td colspan="2">{{ meilleur_auteur }}</td>
+   </tr>
+   <tr>
+      <th colspan="2">Meilleur Utilisateur</th>
+      <td colspan="2">{{ meilleur_user }}</td>
+   </tr>
+   <tr>
+      <th colspan="2">Nombre de citations sans auteur</th>
+      <td colspan="2">{{ citation_sans_auteur }}</td>
+   </tr>
+</table>
+
+
 {% endblock %}
