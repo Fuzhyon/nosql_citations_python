@@ -60,9 +60,10 @@ class MongoDBConnector:
 
     def best_author(self):
         output = []
-        query = self._citation.aggregate([{ "$group": {"_id": "$author", "count": { "$sum": 1}}},{"$sort": {"count": -1}},{"$limit": 1}] )
+        query = self._citation.aggregate([{ "$group": {"_id": "$author", "count": { "$sum": 1}}},{"$sort": {"count": -1}},{"$limit": 2}] )
         for doc in query:
             output.append(doc)
+        print(output)
         return output
 
     def best_user(self):

@@ -29,6 +29,8 @@
             <th scope="col">Oeuvre</th>
             <th scope="col">Date</th>
             <th scope="col">Langue</th>
+            <th scope="col">Nombre</th>
+
         </tr>
         </thead>
         {% for elem in best_citations %}
@@ -38,6 +40,7 @@
             <td>{{ elem.oeuvre }}</td>
             <td>{{ elem.date }}</td>
             <td>{{ elem.langue }}</td>
+            <td>{{ elem.count }}</td>
         </tr>
          {% endfor %}
     </table>

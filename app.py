@@ -209,9 +209,9 @@ def add_or_rm_favorite():
 
 @app.route('/stats', methods=['GET'])
 def stats():
-    bestauthor = str(bdd.best_author()[0]['_id'])
-    bestuser = str(bdd.best_user()[0][' id'])
-
+    bestauthor = str(bdd.best_author()[1]['_id'])
+    bestuser = str(bdd.best_user()[0]['id'])
+    print(bestauthor)
     citations = bdd.get_all_citations()
     count = 0
     top3_citations = bdd.get_sorted_citation()
@@ -219,15 +219,18 @@ def stats():
     premier_auteur = True
 
     for citation in top3_citations:
+        print(citation)
         if premier_auteur:
             premier_auteur = False
             auteur_fav = bdd.get_citation(citation['_id'])['author']
-        output.append(bdd.get_citation(citation['_id']))
+        citation_entiere = bdd.get_citation(citation['_id'])
+        citation_entiere["count"] = citation["sum"]
+        output.append(citation_entiere)
     for elem in citations:
         if not elem['author']:
             count += 1
     return render_template('stats.html', meilleur_auteur=bestauthor, meilleur_user=bestuser, citation_sans_auteur=count,
-                           best_citations=output, auteur_le_plus_fav = auteur_fav)
+                           best_citations=output, auteur_le_plus_fav = auteur_fav, top3stats= top3_citations)
 
 
 if __name__ == "__main__":
